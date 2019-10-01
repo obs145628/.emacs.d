@@ -11,16 +11,18 @@
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
+;; fix the invalid signature issue
+(setq package-check-signature nil)
+
 ;; === Setup before ====
-;; Install Rtags
+;; Install Rtags (2.34)
 ;; install deps packages: clang libclang-dev
 ;; compile from source: https://github.com/Andersbakken/rtags
-;; Warning; You need the same version of rtags from melpa and the one you build
-;; you can check a package version using C-h P (describe-package) then type the package name
 
 ;; Install emacs package:
 ;; - rtags
 ;; - company-rtags
+;; - helm-rtags
 ;; - flycheck
 ;; - flycheck-rtags
 ;; - use-package
