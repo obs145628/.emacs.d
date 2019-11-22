@@ -2,10 +2,15 @@
 ;; http://syamajala.github.io/c-ide.html
 
 ;; To setup it for a new project, we need to do:
-;; $ rdm & (you should run it on another terminal to avoid info display)
-;; $ cd /path/to/project/root
-;; $ cmake . -DCMAKE_EXPORT_COMPILE_COMMANDS=1
-;; $ rc -J .
+;; $ rdm & (you should run it on another terminal to avoid info display);
+;; $ cd /path/to/project/root;
+;; $ cmake . -DCMAKE_EXPORT_COMPILE_COMMANDS=1;
+;; $ rc - J.
+;; Generate clang - format config file:;
+;; clang-format -style=llvm -dump-config > .clang-format
+
+
+
 
 (package-initialize)
 (add-to-list 'package-archives
@@ -15,9 +20,25 @@
 (setq package-check-signature nil)
 
 ;; === Setup before ====
+
+;; Install LLVM from repos: sudo apt-get install clang libclang-dev
+
+;; Install LLVM from source
+;; git repo: https://github.com/llvm/llvm-project
+;; cmake ../llvm/ -DCMAKE_INSTALL_PREFIX=/home/obs/local/llvm10/ -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;lld"
+;; (clang-tools-extra is for tools such as clang-format, clang-tidy, ect)
+;; (lld is for the linker)
+;; make
+;; make install
+
+
 ;; Install Rtags (2.34)
-;; install deps packages: clang libclang-dev
-;; compile from source: https://github.com/Andersbakken/rtags
+;; Dependencies: LLVM
+;;
+;; compile from source: https://github.com/Andersbakken/rtags:
+;; git clone --branch v2.34 --recursive https://github.com/Andersbakken/rtags.git
+;; LIBCLANG_LLVM_CONFIG_EXECUTABLE=/home/obs/local/llvm10/bin/llvm-config cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .
+;; make
 
 ;; Install emacs package:
 ;; - rtags
@@ -54,15 +75,20 @@
 (add-hook 'c++-mode-hook 'company-mode)
 (add-hook 'c-mode-hook 'company-mode)
 
+
 ;; completion without delay
 (setq company-idle-delay 0)
 (define-key c-mode-map [(tab)] 'company-complete)
 (define-key c++-mode-map [(tab)] 'company-complete)
 
+;; TODO: change to clang path
+(setq company-clang-executable "/home/obs/local/llvm10/bin/clang")
 
 
 ;; === Syntax checking flycheck ===
 
+;; TODO: change to clang path
+(setq-default flycheck-c/c++-clang-executable "/home/obs/local/llvm10/bin/clang")
 
 (add-hook 'c++-mode-hook 'flycheck-mode)
 (add-hook 'c-mode-hook 'flycheck-mode)
@@ -79,6 +105,35 @@
 
 ;c-mode-common-hook is also called by c++-mode
 (add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup)
+
+
+
+;; === clang-format ====
+
+
+;; TODO: change path to clang-format.el
+(load "/home/obs/local/llvm10/share/clang/clang-format.el")
+
+(global-set-key (kbd "C-c i") 'clang-format-region)
+(global-set-key (kbd "C-c u") 'clang-format-buffer)
+;; TODO: change path to clang-format binary
+(setq clang-format-executable "/home/obs/local/llvm10/bin/clang-format")
+(setq clang-format-style-option "llvm")
+
+;; Run clang-format when saving file
+(defun save-clang-format-setup ()
+   (add-hook 'before-save-hook
+                              'clang-format-buffer nil 'make-it-local)
+   )
+(add-hook 'c-mode-common-hook #'save-clang-format-setup)
+
+
+
+
+;; === Emacs config ====
+
+
+(add-hook 'prog-mode-hook 'linum-mode) ;always display line numbers
 
 
 (custom-set-variables
