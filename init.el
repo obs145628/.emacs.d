@@ -5,9 +5,9 @@
 ;; $ rdm & (you should run it on another terminal to avoid info display);
 ;; $ cd /path/to/project/root;
 ;; $ cmake . -DCMAKE_EXPORT_COMPILE_COMMANDS=1;
-;; $ rc - J.
-;; Generate clang - format config file:;
-;; clang-format -style=llvm -dump-config > .clang-format
+;; $ rc -J .
+;; Generate clang - format config file: (not needec with extension for clang-format)
+;; clang-format -style=llvm -dump-config > .clang-format 
 
 
 
