@@ -47,6 +47,11 @@
 (use-package rust-mode
   :hook (rust-mode . lsp))
 
+
+;; run rustftm when saving buffer
+(setq rust-format-on-save t)
+
+
 ;; Add keybindings for interacting with Cargo
 (use-package cargo
   :hook (rust-mode . cargo-minor-mode))
