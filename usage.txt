@@ -1,0 +1,20 @@
+
+# Generate Compile Database:
+
+cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=1
+
+# Select Compile Database used by Irony:
+
+Run irony-cdb-json-add-compile-commands-path
+First select the project root, then the compile_comands.json file path
+
+
+# Use clang-format
+
+Format all the file every time a file is saved.
+Style chosen from .clang-format file (search in current dir and upper directories recur)
+
+Generate clang-format file:
+clang-format -style=llvm -dump-config > .clang-format
+
+Can have a general one in HOME dir, then a more spefic one in project root dir

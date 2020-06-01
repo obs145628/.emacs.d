@@ -1,4 +1,8 @@
 
+Informations:
+- https://syamajala.github.io/c-ide.html
+
+
 Install the following packages:
 - company
 - company-irony

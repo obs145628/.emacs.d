@@ -25,6 +25,10 @@
 
 (add-hook 'c++-mode-hook 'irony-mode)
 (add-hook 'c-mode-hook 'irony-mode)
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+; Instant completion
+(setq company-idle-delay 0)
 
 ;; ### C/C++ Checker with Flycheck ###
 
@@ -33,11 +37,25 @@
 (eval-after-load 'flycheck
   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
-;; ### GENERAL CONFIG ###
+;; ### CLANG-FORMAT ###
 
+; @TODO change to clang-format path
+(load "/home/obs/local/llvm10/share/clang/clang-format.el")
+
+; Run clang-format when saving file
+(defun save-clang-format-setup ()
+   (add-hook 'before-save-hook
+                              'clang-format-buffer nil 'make-it-local)
+   )
+(add-hook 'c-mode-common-hook #'save-clang-format-setup)
+
+;; ### GENERAL CONFIG ###
 
 ; always display line numbers
 (add-hook 'prog-mode-hook 'linum-mode) 
+
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
