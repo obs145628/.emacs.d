@@ -1,0 +1,11 @@
+
+Install the following packages:
+- company
+- company-irony
+- irony
+- flycheck
+- flycheck-irony
+
+Also need to install irony-server:
+It's using libclang internally
+cmake -DCMAKE_INSTALL_PREFIX\=/home/obs/.emacs.d/irony/ -DClang_DIR=/home/obs/local/llvm10/lib/cmake/clang/ -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON  /home/obs/.emacs.d/elpa/irony-1.4.0/server && cmake --build . --use-stderr --config Release --target install
