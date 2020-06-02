@@ -42,6 +42,9 @@
 ; @TODO change to clang-format path
 (load "/home/obs/local/llvm10/share/clang/clang-format.el")
 
+; @TODO change to clang-format binary
+(setq clang-format-executable "/home/obs/local/llvm10/bin/clang-format")
+
 ; Run clang-format when saving file
 (defun save-clang-format-setup ()
    (add-hook 'before-save-hook
